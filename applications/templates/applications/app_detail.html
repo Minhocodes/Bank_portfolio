@@ -1,0 +1,178 @@
+{% extends "base.html" %}
+{% block title %}{{ app.name }}{% endblock %}
+
+{% block content %}
+  <div class="page-title">
+    <h1>{{ app.name }}</h1>
+    <a class="btn btn-ghost" href="{% url 'app_list' %}">← Back</a>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <h3>Basic</h3>
+      <table>
+        <tbody>
+          <tr><th>Domain</th><td>{{ app.domain }}</td></tr>
+          <tr><th>Criticality</th><td>{{ app.criticality }}</td></tr>
+          <tr><th>Lifecycle</th><td>{{ app.lifecycle }}</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h3>Environment</h3>
+      <table>
+        <tbody>
+          <tr><th>Environment</th><td>{{ app.environment }}</td></tr>
+          <tr><th>Region</th><td>{{ app.region }}</td></tr>
+          <tr><th>Hosting</th><td>{{ app.hosting }}</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <h3>Ownership</h3>
+      <table>
+        <tbody>
+          <tr><th>Business owner</th><td>{{ app.business_owner }}</td></tr>
+          <tr><th>IT owner</th><td>{{ app.it_owner }}</td></tr>
+          <tr><th>Vendor</th><td>{{ app.vendor }}</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h3>Risk & data</h3>
+      <table>
+        <tbody>
+          <tr><th>Data sensitivity</th><td>{{ app.data_sensitivity }}</td></tr>
+          <tr><th>Tech debt score</th><td>{{ app.tech_debt_score }}</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Technology</h3>
+    <table>
+      <tbody>
+        <tr><th>Tech stack</th><td>{{ app.tech_stack }}</td></tr>
+        <tr><th>Runtime</th><td>{{ app.runtime }}</td></tr>
+        <tr><th>Database</th><td>{{ app.database_technology }}</td></tr>
+        <tr><th>Vendor products</th><td>{{ app.vendor_products }}</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>Capabilities</h3>
+    <p class="muted" style="margin-top:0;">What this application can do.</p>
+    <ul>
+      {% for cap in app.capabilities.all %}
+        <li>{{ cap.name }}</li>
+      {% empty %}
+        <li class="muted">No capabilities defined.</li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <div class="card">
+    <div style="display:flex; align-items:center; justify-content:space-between; gap:12px;">
+      <div>
+        <h3 style="margin:0;">Integration landscape</h3>
+        <p class="muted" style="margin:6px 0 0;">Generate a Mermaid diagram for the closest integration neighborhood.</p>
+      </div>
+
+      <form method="post" action="{% url 'app_mermaid_llm' app.id %}">
+        {% csrf_token %}
+        <button class="btn btn-primary" type="submit">Generate Mermaid</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <h3>Outbound integrations</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Target</th>
+            <th>Type</th>
+            <th>Daily volume</th>
+            <th>Sensitivity</th>
+            <th>Transport</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for i in app.outbound_integrations.all %}
+            <tr>
+              <td><a href="{% url 'app_detail' i.target_app.id %}">{{ i.target_app.name }}</a></td>
+              <td>{{ i.integration_type }}</td>
+              <td>{{ i.daily_volume }}</td>
+              <td>{{ i.data_sensitivity }}</td>
+              <td>{{ i.transport }}</td>
+            </tr>
+          {% empty %}
+            <tr><td colspan="5" class="muted">No outbound integrations.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h3>Inbound integrations</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Source</th>
+            <th>Type</th>
+            <th>Daily volume</th>
+            <th>Sensitivity</th>
+            <th>Transport</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for i in app.inbound_integrations.all %}
+            <tr>
+              <td><a href="{% url 'app_detail' i.source_app.id %}">{{ i.source_app.name }}</a></td>
+              <td>{{ i.integration_type }}</td>
+              <td>{{ i.daily_volume }}</td>
+              <td>{{ i.data_sensitivity }}</td>
+              <td>{{ i.transport }}</td>
+            </tr>
+          {% empty %}
+            <tr><td colspan="5" class="muted">No inbound integrations.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Tech debt items</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Category</th>
+          <th>Severity</th>
+          <th>Status</th>
+          <th>Title</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for debt in app.tech_debt_items.all %}
+          <tr>
+            <td>{{ debt.category }}</td>
+            <td>{{ debt.severity }}</td>
+            <td>{{ debt.status }}</td>
+            <td>{{ debt.title }}</td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="4" class="muted">No tech debt items.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

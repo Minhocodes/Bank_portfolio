@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+  <div class="page-title">
+    <h1>Dashboard</h1>
+    <span class="badge">{{ total_apps }} apps</span>
+  </div>
+
+  <p class="muted">High-level overview of the application portfolio.</p>
+
+  <div class="stats">
+    <div class="stat">
+      <div class="stat__label">Total applications</div>
+      <div class="stat__value">{{ total_apps }}</div>
+    </div>
+
+    <div class="stat">
+      <div class="stat__label">Avg tech debt score</div>
+      <div class="stat__value">{{ avg_debt|default:0|floatformat:1 }}</div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <h3>Criticality distribution</h3>
+      <div class="chart-box">
+        <canvas id="critChart"></canvas>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Environment distribution</h3>
+      <div class="chart-box">
+        <canvas id="envChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:14px;">
+    <h2 style="margin:0 0 10px;">Top 5 by Tech Debt Score</h2>
+
+    <table>
+      <thead>
+        <tr>
+          <th>App</th>
+          <th>Criticality</th>
+          <th>Environment</th>
+          <th>Tech Debt Score</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for a in top_debt %}
+        <tr>
+          <td><a href="/apps/{{ a.id }}/">{{ a.name }}</a></td>
+          <td>{{ a.criticality }}</td>
+          <td>{{ a.environment }}</td>
+          <td>{{ a.tech_debt_score }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="4" class="muted">No data.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  {{ criticality_labels|json_script:"critLabels" }}
+  {{ criticality_values|json_script:"critValues" }}
+  {{ env_labels|json_script:"envLabels" }}
+  {{ env_values|json_script:"envValues" }}
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    const criticalityLabels = JSON.parse(document.getElementById("critLabels").textContent);
+    const criticalityValues = JSON.parse(document.getElementById("critValues").textContent);
+
+    const envLabels = JSON.parse(document.getElementById("envLabels").textContent);
+    const envValues = JSON.parse(document.getElementById("envValues").textContent);
+
+    const RB = {
+      black: "#111111",
+      yellow: "#ffcc00",
+      grid: "#eeeeee",
+      tick: "#666666"
+    };
+
+    function commonOptions() {
+      return {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: "#111111",
+            titleColor: "#ffffff",
+            bodyColor: "#ffffff",
+            borderColor: "#ffcc00",
+            borderWidth: 1
+          }
+        },
+        scales: {
+          x: {
+            grid: { display: false },
+            ticks: { color: RB.tick, font: { weight: "600" } }
+          },
+          y: {
+            beginAtZero: true,
+            grid: { color: RB.grid },
+            ticks: { color: RB.tick }
+          }
+        }
+      };
+    }
+
+    function makeBarChart(canvasId, labels, values) {
+      const ctx = document.getElementById(canvasId);
+      return new Chart(ctx, {
+        type: "bar",
+        data: {
+          labels,
+          datasets: [{
+            data: values,
+            backgroundColor: RB.black,
+            hoverBackgroundColor: RB.yellow,
+            borderRadius: 3,
+            borderSkipped: false
+          }]
+        },
+        options: commonOptions()
+      });
+    }
+
+    window.addEventListener("load", () => {
+      makeBarChart("critChart", criticalityLabels, criticalityValues);
+      makeBarChart("envChart", envLabels, envValues);
+    });
+  </script>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Analysis{% endblock %}
+
+{% block content %}
+  <div class="page-title">
+    <h1>LLM Analysis</h1>
+    <span class="badge">Portfolio</span>
+  </div>
+
+  <div class="card">
+    <p class="muted" style="margin-top:0;">
+      Structured recommendations, risks and modernization hints generated from the current dataset.
+    </p>
+
+    {% if error %}
+      <p style="color:red; font-weight:800;">{{ error }}</p>
+    {% elif result %}
+      <pre style="white-space: pre-wrap; margin:0;">{{ result }}</pre>
+    {% else %}
+      <p class="muted" style="margin:0;">No analysis generated yet.</p>
+    {% endif %}
+  </div>
+{% endblock %}

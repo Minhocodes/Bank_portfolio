@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}{{ app.name }} – Mermaid{% endblock %}
+
+{% block content %}
+  <div class="page-title">
+    <h1>Mermaid diagram</h1>
+    <a class="btn btn-ghost" href="{% url 'app_detail' app.id %}">← Back</a>
+  </div>
+
+  <div class="card">
+    <p class="muted" style="margin-top:0;">Application: <strong>{{ app.name }}</strong></p>
+
+    {% if error %}
+      <p style="color:red; font-weight:800; margin: 0 0 12px;">{{ error }}</p>
+    {% endif %}
+
+    <div id="diagram" class="mermaid"></div>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs";
+
+    mermaid.initialize({ startOnLoad: false });
+
+    const diagram = `{{ mermaid|escapejs }}`;
+    const el = document.getElementById("diagram");
+    el.textContent = diagram;
+
+    await mermaid.run({ nodes: [el] });
+  </script>
+{% endblock %}

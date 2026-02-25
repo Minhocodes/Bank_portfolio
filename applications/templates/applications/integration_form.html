@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block title %}{% if mode == "create" %}Create Integration{% else %}Edit Integration{% endif %}{% endblock %}
+
+{% block content %}
+  <div class="page-title">
+    <h1>{% if mode == "create" %}Create Integration{% else %}Edit Integration{% endif %}</h1>
+    <a class="btn btn-ghost" href="{% url 'integration_list' %}">← Back</a>
+  </div>
+
+  <div class="card">
+    <form method="post">
+      {% csrf_token %}
+
+      <div class="form-row">
+        <div>
+          <label class="muted">Source app</label>
+          <select name="source_app" required>
+            {% for a in apps %}
+              <option value="{{ a.id }}" {% if integration and integration.source_app.id == a.id %}selected{% endif %}>
+                {{ a.name }}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div>
+          <label class="muted">Target app</label>
+          <select name="target_app" required>
+            {% for a in apps %}
+              <option value="{{ a.id }}" {% if integration and integration.target_app.id == a.id %}selected{% endif %}>
+                {{ a.name }}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div>
+          <label class="muted">Integration type</label>
+          <input type="text" name="integration_type" value="{{ integration.integration_type|default:'API' }}" />
+        </div>
+      </div>
+
+      <div class="form-row" style="margin-top:12px;">
+        <div>
+          <label class="muted">Direction (sync/async)</label>
+          <input type="text" name="direction" value="{{ integration.direction|default:'async' }}" />
+        </div>
+
+        <div>
+          <label class="muted">Daily volume</label>
+          <input type="text" name="daily_volume" value="{{ integration.daily_volume|default:0 }}" />
+        </div>
+
+        <div>
+          <label class="muted">Data sensitivity</label>
+          <input type="text" name="data_sensitivity" value="{{ integration.data_sensitivity|default:'Medium' }}" />
+        </div>
+      </div>
+
+      <div class="form-row" style="margin-top:12px;">
+        <div>
+          <label class="muted">Transport</label>
+          <input type="text" name="transport" value="{{ integration.transport|default:'' }}" />
+        </div>
+
+        <div>
+          <label class="muted">Frequency</label>
+          <input type="text" name="frequency" value="{{ integration.frequency|default:'' }}" />
+        </div>
+
+        <div>
+          <label class="muted">Interface name</label>
+          <input type="text" name="interface_name" value="{{ integration.interface_name|default:'' }}" />
+        </div>
+      </div>
+
+      <div style="display:flex; gap:10px; margin-top:14px;">
+        <button class="btn btn-primary" type="submit">{% if mode == "create" %}Create{% else %}Save{% endif %}</button>
+        <a class="btn btn-ghost" href="{% url 'integration_list' %}">Cancel</a>
+      </div>
+    </form>
+  </div>
+{% endblock %}
