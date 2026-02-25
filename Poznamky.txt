@@ -1,0 +1,14 @@
+Co bych realizoval při více času:
+
+Deterministické generování Mermaid diagramu (bez LLM)
+Generovat Mermaid diagram přímo z databázových záznamů integrací (inbound/outbound).
+LLM by bylo využito pouze volitelně pro validaci nebo stylistické vylepšení výstupu.
+Přínosy: předvídatelný výstup, nižší náklady na API, funkčnost i při nedostupnosti LLM služby.
+
+Nasazení pomocí Dockeru
+Vytvoření Dockerfile a docker-compose.yml (web + databáze), příprava environment šablon a základní CI kontroly (např. linting, testy).
+Cílem je snadná replikovatelnost prostředí a připravenost pro produkční nasazení.
+
+Zlepšení UX/UI
+Vylepšení vizuální konzistence, responzivity a struktury výstupů (např. renderování odpovědí do přehledných komponent místo čistého textu).
+Zaměření na čitelnost analýz a lepší práci s výsledky LLM.
