@@ -12,7 +12,7 @@ It demonstrates:
 
 ---
 
-## 🏗 Architecture Overview
+## Architecture Overview
 
 The application is structured as a modular Django project.
 
@@ -35,8 +35,18 @@ The application is structured as a modular Django project.
 
 ---
 
+## Demo Instructions
+### Portfolio Analysis
+ - Go to /analysis/ - Generates structured strategic analysis from application dataset.
 
-## ⚙️ Setup
+### Q&A
+ - Go to /qa/ - Ask questions like: - Which applications are candidates for modernization?
+                                    - Which critical apps run in PROD?
+                                    - What are the main risks?
+### Mermaid Integration Diagram
+ - click on any application and then Click "Generate Mermaid (LLM)" to create integration diagram.
+
+## Setup
 
 ### 1. Create virtual environment
 
