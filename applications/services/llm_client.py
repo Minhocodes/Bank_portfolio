@@ -20,7 +20,8 @@ def _get_model() -> str:
     return model
 
 
-def ask_llm(prompt: str) -> str:
+def llm_ask(prompt: str) -> str:
+    print("LLM CALLED")
     if not getattr(settings, "LLM_API_KEY", None):
         raise LLMError("Missing LLM_API_KEY")
 
@@ -71,3 +72,8 @@ def ask_llm(prompt: str) -> str:
             raise LLMError(f"LLM request failed: {e}")
 
     raise LLMError("LLM request failed")
+
+
+
+def ask_llm(prompt: str) -> str:
+    return llm_ask(prompt)  

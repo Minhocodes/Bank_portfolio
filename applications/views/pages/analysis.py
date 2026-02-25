@@ -3,8 +3,8 @@ import logging
 from django.shortcuts import render
 from django.core.cache import cache
 from django.db.models import Count
-from ..models import Application
-from ..services.llm_client import ask_llm, LLMError
+from ...models import Application
+from ...services.llm_client import ask_llm, LLMError
 
 logger = logging.getLogger(__name__)
 def analysis_view(request):

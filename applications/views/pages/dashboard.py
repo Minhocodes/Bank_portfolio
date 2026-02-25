@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.db.models import Count, Avg
-from ..models import Application
+from ...models import Application
 
 def dashboard_view(request):
     total_apps = Application.objects.count()

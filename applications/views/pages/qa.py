@@ -6,8 +6,8 @@ from django.http import JsonResponse
 from django.core.cache import cache
 from django.db.models import Count
 from django.views.decorators.http import require_POST
-from ..models import Application
-from ..services.llm_client import ask_llm, LLMError
+from ...models import Application
+from ...services.llm_client import ask_llm, LLMError
 
 logger = logging.getLogger(__name__)
 

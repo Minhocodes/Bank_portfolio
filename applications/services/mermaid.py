@@ -3,7 +3,7 @@ import logging
 from django.shortcuts import render, get_object_or_404
 from django.core.cache import cache
 from ..models import Application
-from ..services.llm_client import ask_llm, LLMError
+from .llm_client import ask_llm, LLMError
 
 logger = logging.getLogger(__name__)
 def application_mermaid(request, pk):

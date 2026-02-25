@@ -36,7 +36,9 @@
     <div class="card">
       <h3>Answer</h3>
       {% if last_answer %}
-        <pre style="white-space: pre-wrap; margin:0;">{{ last_answer }}</pre>
+        <div class="qa-output">
+          {{ last_answer|cut:"**"|cut:"### "|cut:"## "|cut:"# "|linebreaks }}
+        </div>
       {% else %}
         <p class="muted" style="margin:0;">No answer yet.</p>
       {% endif %}

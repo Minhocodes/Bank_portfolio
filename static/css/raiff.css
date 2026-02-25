@@ -246,3 +246,22 @@ table a:visited{
 table a:hover{
   text-decoration: underline;
 }
+
+.qa-output {
+  font-size: 15px;
+  line-height: 1.65;
+  color: #222;
+}
+
+.qa-output p {
+  margin: 0 0 10px;
+}
+
+.qa-output ul {
+  padding-left: 18px;
+  margin: 8px 0 0;
+}
+
+.qa-output li {
+  margin-bottom: 6px;
+}

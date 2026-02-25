@@ -1,11 +1,12 @@
 from django.urls import path
 from django.views.generic import RedirectView
-from .views.dashboard import dashboard_view
-from .views.apps import application_list, application_detail
-from .views.mermaid import application_mermaid_llm
-from .views.qa import qa_view, llm_ask
-from .views.analysis import analysis_view
-from .views.integrations import (
+from .views.pages.dashboard import dashboard_view
+from .views.pages.apps import application_list, application_detail
+from .services.mermaid import application_mermaid_llm
+from .services.llm_client import llm_ask
+from .views.pages.qa import qa_view
+from .views.pages.analysis import analysis_view
+from .views.pages.integrations import (
     integration_list, integration_create, integration_edit, integration_delete
 )
 

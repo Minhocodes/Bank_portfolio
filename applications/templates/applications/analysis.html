@@ -14,8 +14,12 @@
 
     {% if error %}
       <p style="color:red; font-weight:800;">{{ error }}</p>
+
     {% elif result %}
-      <pre style="white-space: pre-wrap; margin:0;">{{ result }}</pre>
+      <div class="analysis-output">
+        {{ result|cut:"### "|cut:"## "|cut:"# "|cut:"**"|linebreaks }}
+      </div>
+
     {% else %}
       <p class="muted" style="margin:0;">No analysis generated yet.</p>
     {% endif %}
